@@ -1,6 +1,6 @@
 // const { route } = require("..")
 const { createEducation, updatePhotoEducation } = require("../controllers/EducationController")
-const { getAll, updateOne, deleteAll } = require("../controllers/handleFactory")
+const { getAll, updateOne, deleteAll, deleteOne, updatePhoto } = require("../controllers/handleFactory")
 const upload = require("../middleware/uploadOption")
 const Education = require("../models/EducationModel")
 
@@ -13,8 +13,9 @@ router.route('/')
 
 router.route('/:id')
     .patch(updateOne(Education))
+    .delete(deleteOne(Education))
 
 router.route('/:id/photo')
-    .patch(updatePhotoEducation)
+    .patch(upload.single('file'), updatePhoto(Education))
 
 module.exports = router

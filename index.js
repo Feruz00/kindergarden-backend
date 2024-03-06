@@ -3,7 +3,6 @@ const cors = require('cors')
 const compression = require('compression')
 const path = require('path')
 const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
@@ -20,11 +19,6 @@ app.use(
     helmet()
   );
 
-const limiter = rateLimit({
-    max: 5,
-    windowMs: 60 * 60 * 1000,
-    message: 'Too many requests from this IP, please try again in an hour!'
-});
 
 app.use(cors({
     origin: [process.env.CLIENT],
@@ -75,6 +69,13 @@ app.use('/api/subjects', require('./routes/SubjectRoute'))
 app.use('/api/galtype', require('./routes/GalleryTypeRoute'))
 app.use('/api/gallery', require('./routes/GalleryRoute'))
 
+app.use('/api/auth', require('./routes/AuthRoute'))
+
+app.all("*", (req,res)=>{
+    return res.status(404).json({
+        message: 'Bu sahypa kesgitlenmedik'
+    })
+})
 
 
 

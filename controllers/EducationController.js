@@ -18,6 +18,7 @@ const createEducation = catchAsync(
 const updatePhotoEducation = catchAsync(
     async (req,res,next)=>{
         const {path} = req.file
+        console.log(req.file)
         await Education.findByIdAndUpdate(req.params.id, {
             url:path
         })

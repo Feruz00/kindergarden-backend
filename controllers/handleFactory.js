@@ -88,6 +88,7 @@ const getAll = (Model, filter, popOptions) =>
 
 const updatePhoto = Model=> catchAsync(
     async (req,res,next)=>{
+      // console.log(req.file)
         const {path} = req.file
         await Model.findByIdAndUpdate(req.params.id, {
             url:path
