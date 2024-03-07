@@ -16,6 +16,6 @@ router.route('/:id')
     .delete( deleteOne(Subject) )
 
 router.route('/:id/img')
-    .patch(upload.single('single'), updatePhoto(Subject))
+    .patch(upload.single('file'), updatePhoto(Subject))
 
 module.exports = router

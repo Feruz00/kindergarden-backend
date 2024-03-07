@@ -73,13 +73,18 @@ const changePassword = catchAsync(
     }
 )
 
-const uploadPhoto = catchAsync(
-    async (req, res, next)=>{
+const uploadPhoto = catchAsync(async (req, res, next) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
         const file = req.file.path;
-        const user = await User.updateOne({ _id: req.user._id, }, { $set: { url: file } }, {new: true})
-        return res.json(user)
+        const user = await User.updateOne({ _id: req.user._id }, { $set: { url: file } }, { new: true });
+        return res.json(user);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
-)
+});
 
 const protect = catchAsync(
     async (req,res, next)=>{

@@ -2,7 +2,7 @@ const router = require('express').Router()
 
 const rateLimit = require('express-rate-limit');
 const { protect, getUser, register, login, changeInfo, changePassword, uploadPhoto, logout } = require('../controllers/AuthController');
-const { deleteOne, updatePhoto } = require('../controllers/handleFactory');
+const { deleteOne } = require('../controllers/handleFactory');
 const User = require('../models/UserModel');
 const upload = require('../middleware/uploadOption');
 
@@ -19,7 +19,7 @@ router.route('/')
     .patch(protect, changePassword)
 
 router.route('/login')
-    .post(login)
+    .post(limiter, login)
 
 router.route('/logout')
     .get(logout)
