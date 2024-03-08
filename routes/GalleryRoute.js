@@ -22,7 +22,7 @@ router.route('/:id/file')
     .patch( galleryOptions.single("file"), updatePhoto(Gallery))
 
 router.route('/:id/image')
-    .patch( galleryOptions.single("picture"), updatePicture)
+    .patch( galleryOptions.single("file"), updatePicture)
 
 
 module.exports = router

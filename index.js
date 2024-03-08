@@ -10,7 +10,7 @@ const hpp = require('hpp');
 const session = require('express-session')
 const passport = require('passport');
 const User = require('./models/UserModel');
-
+const fs = require('fs')
 const app = express()
 
 app.use(express.json())
@@ -25,6 +25,37 @@ app.use(cors({
     credentials: true
 }))
 
+app.get('/uploads/video/:name', (req, res) => {
+    const path = `${__dirname}/uploads/video/${req.params.name}`;
+    console.log(path)
+    const stat = fs.statSync(path);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+    if (range) {
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1]
+            ? parseInt(parts[1], 10)
+            : fileSize-1;
+        const chunksize = (end-start) + 1;
+        const file = fs.createReadStream(path, {start, end});
+        const head = {
+            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': 'video/mp4',
+        };
+        res.writeHead(206, head);
+        file.pipe(res);
+    } else {
+        const head = {
+            'Content-Length': fileSize,
+            'Content-Type': 'video/mp4',
+        };
+        res.writeHead(200, head);
+        fs.createReadStream(path).pipe(res);
+    }
+});
 app.use( '/uploads', express.static( path.join(__dirname, 'uploads')))
 
 app.use(mongoSanitize());
@@ -70,6 +101,8 @@ app.use('/api/galtype', require('./routes/GalleryTypeRoute'))
 app.use('/api/gallery', require('./routes/GalleryRoute'))
 
 app.use('/api/auth', require('./routes/AuthRoute'))
+
+
 
 app.all("*", (req,res)=>{
     return res.status(404).json({

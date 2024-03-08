@@ -9,7 +9,7 @@ const deleteOne = (Model) =>
     if (!doc) {
       return next(new AppError('No document found with that ID', 404));
     }
-    fs.unlinkSync(doc.url);    
+    if(doc?.url && fs.existsSync(doc.url)) fs.unlinkSync(doc.url);    
     res.status(204).json({
       status: 'success',
       data: null
@@ -20,7 +20,7 @@ const deleteAll = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.deleteMany();
     doc.forEach(i=>{
-      fs.unlinkSync(i.url);
+      if(i?.url && fs.existsSync(i.url)) fs.unlinkSync(i.url);
     })
     res.status(204).json({
       status: 'success',
@@ -49,6 +49,7 @@ const updateOne = (Model) =>
 
 const createOne = (Model) => 
   catchAsync(async (req, res, next) => {
+    // console.log(req.body)
     const doc = await Model.create(req.body);
     res.status(201).json({
         status: 'success',
