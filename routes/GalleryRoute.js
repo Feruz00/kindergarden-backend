@@ -1,4 +1,5 @@
-const { createGallery, updatePicture } = require('../controllers/GalleryConrtoller')
+
+const { createGallery, updatePicture, updateGalleryPdf } = require('../controllers/GalleryConrtoller')
 const { getAll, deleteAll, getOne, updateOne, deleteOne, updatePhoto } = require('../controllers/handleFactory')
 const galleryOptions = require('../middleware/galleryOptions')
 const Gallery = require('../models/GalleryModel')
@@ -12,7 +13,7 @@ router.route('/')
         {name:'picture', maxCount: 1},
         {name: 'file', maxCount: 1}
     ]), createGallery )
-
+    .put(updateGalleryPdf)
 router.route('/:id')
     .get(getOne(Gallery, undefined, ['type']))
     .patch(updateOne(Gallery))

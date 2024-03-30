@@ -30,5 +30,6 @@ const updatePhotoEducation = catchAsync(
 
 module.exports = {
     createEducation,
-    updatePhotoEducation
+    updatePhotoEducation,
+    // updatePdfEducation
 }

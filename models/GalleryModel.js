@@ -11,6 +11,7 @@ const gallerySchema = new mongoose.Schema({
         type:String,
         required: [true, 'Url must be required!']
     },
+    images:[String],
     type:{
         type: mongoose.Types.ObjectId,
         ref: 'Gallerytype'
