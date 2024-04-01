@@ -7,11 +7,19 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Username required'],
         unique:[true, 'Username already exists']
     },
+    role: {
+        type: String,
+        enum: {
+            values: ['admin', 'member'],
+            message: 'Other type not a list'
+        } 
+    },
     password: {
         type: String
     },
     fullName:String,
-    url: String
+    url: String,
+    bio: String
 })
 
 userSchema.plugin(passportLocalMongoose)

@@ -16,9 +16,9 @@ const deleteOne = (Model) =>
     });
 });
 
-const deleteAll = (Model) =>
+const deleteAll = (Model, filter={}) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.deleteMany();
+    const doc = await Model.deleteMany(filter);
     doc.forEach(i=>{
       if(i?.url && fs.existsSync(i.url)) fs.unlinkSync(i.url);
     })
@@ -72,9 +72,11 @@ const getOne = (Model, popOptions) =>
     });
 });
 
-const getAll = (Model, filter, popOptions) =>
+const getAll = (Model, filter={}, popOptions) =>
   catchAsync(async (req, res, next) => {
-    const fil = req.query ? req.query : filter ? filter: {};
+    const fil = {...req.query, ...filter}
+    
+    // req.query ? req.query : filter ? filter: {};
     // console.log(req.query)
     const doc = await Model.find(fil).populate(popOptions || [])
     // console.log(popOptions, filter)

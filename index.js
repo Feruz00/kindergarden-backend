@@ -101,7 +101,7 @@ app.use('/api/galtype', require('./routes/GalleryTypeRoute'))
 app.use('/api/gallery', require('./routes/GalleryRoute'))
 
 app.use('/api/auth', require('./routes/AuthRoute'))
-
+app.use('/api/users', require('./routes/UserRoute'))
 
 
 app.all("*", (req,res)=>{

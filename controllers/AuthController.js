@@ -5,7 +5,7 @@ const passport = require('passport')
 const register = catchAsync(
     async (req, res, next)=>{
         const {password, ...other} = req.body
-        console.log(other)
+        // console.log(other)
         const user = await User.register({...other}, password) 
         res.json(user)
     }
