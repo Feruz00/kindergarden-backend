@@ -4,8 +4,9 @@ const passport = require('passport')
 
 const register = catchAsync(
     async (req, res, next)=>{
+        // console.log("geldim")
         const {password, ...other} = req.body
-        // console.log(other)
+        // console.log(req.body)
         const user = await User.register({...other}, password) 
         res.json(user)
     }
@@ -89,13 +90,24 @@ const uploadPhoto = catchAsync(async (req, res, next) => {
 const protect = catchAsync(
     async (req,res, next)=>{
         if(req.isAuthenticated()){
+            // console.log("geldim protect")
+
            return next()
         }
         return res.status(403).json({message: 'Bu sahypa girip bilmeýärsiňiz'})
        
     }
 )
-
+const resetPassword = catchAsync(
+    async(req,res,next)=>{
+        console.log(req.params, req.body)
+        const found = await User.findById(req.params.id)
+        await found.setPassword(req.body.password, async function(err, user){
+            if(!err) await user.save();
+        });
+        res.json(found)
+    }
+)
 module.exports = {
-    getUser, login, logout, changeInfo, changePassword, uploadPhoto, register, protect
+    getUser, login, logout, changeInfo, changePassword, uploadPhoto, register, protect, resetPassword
 }

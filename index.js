@@ -14,6 +14,7 @@ const fs = require('fs')
 const app = express()
 
 app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 // app.enable('trust proxy');
 app.use(
     helmet()
@@ -102,7 +103,7 @@ app.use('/api/gallery', require('./routes/GalleryRoute'))
 
 app.use('/api/auth', require('./routes/AuthRoute'))
 app.use('/api/users', require('./routes/UserRoute'))
-
+app.use('/api/about', require('./routes/AboutRoute'))
 
 app.all("*", (req,res)=>{
     return res.status(404).json({

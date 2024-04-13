@@ -19,7 +19,11 @@ const userSchema = new mongoose.Schema({
     },
     fullName:String,
     url: String,
-    bio: String
+    bio: String,
+    status: {
+        type: Boolean,
+        default: true
+    }
 })
 
 userSchema.plugin(passportLocalMongoose)

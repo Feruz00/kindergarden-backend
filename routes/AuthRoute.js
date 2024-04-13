@@ -5,6 +5,7 @@ const { protect, getUser, register, login, changeInfo, changePassword, uploadPho
 const { deleteOne } = require('../controllers/handleFactory');
 const User = require('../models/UserModel');
 const upload = require('../middleware/uploadOption');
+const checkStatus = require('../middleware/userOptions');
 
 const limiter = rateLimit({
     max: 5,
@@ -19,7 +20,7 @@ router.route('/')
     .patch(protect, changePassword)
 
 router.route('/login')
-    .post(limiter, login)
+    .post(limiter, checkStatus, login)
 
 router.route('/logout')
     .get(logout)
